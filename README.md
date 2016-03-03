@@ -37,7 +37,109 @@ pyEpicsDb can be used for the following purposes:
    IOC code and databases needed to host the PVs.
    
    
+The heart of pyEpicsDb is the epicspv class, in epicsclass.py. This class represents
+a single epics PV with all its fields and asynDriver definitions. An entire database
+is represented as a python list of these objects. epicspv, given a file handle, can
+parse or write to an epics template file. All fields can be programmatically changed,
+deleted or added. Also PVs can be entirely programmacitalkly created and written 
+to an EPICS template file. 
    
+   
+Examples:
+
+To reformat a template file for nice white space usage:
+execfile('epicsDb2Docs.py')
+
+fn = 'D:/Madden/GitHub/areaDetector-R2-4/ADPCO/pcoApp/Db/pco_metarecs.template'
+#read EPICS database template into a python list of epicspv objects.
+db =readDb(fn)
+#write the database back to a file.
+writeDb(db,fn)
+#now white space is nicer.
+
+
+To generate an HTML table of an epics database it is easiest to have PV names
+and asynDriver parameter strings the same. Otherwise one must have some
+set of rules of how params, param strings and PVs are named. pvEpicsDb is written
+such that PVs, params, param strings are all identical.
+To generate a table:
+
+#read EPICS database template into a python list of epicspv objects.
+
+fn = 'D:/Madden/GitHub/areaDetector-R2-4/ADPCO/pcoApp/Db/pco_metarecs.template'
+db =readDb(fn)
+#Generate an html table for documentation
+dbToHtmlDoc(db,filename='table.html')
+
+
+
+Find PV object in a database
+pv = findPv(db,'$(P)$(R)mypv')
+
+
+
+To associate write PVs with corresponding readback PVs, we name the write PV
+$(P)$(R)mypv, and the readback pv as $(P)$(R)mypv_RBV
+we can group these PVs as tuples from a list of pv objects.
+
+
+fn = 'D:/Madden/GitHub/areaDetector-R2-4/ADPCO/pcoApp/Db/pco_metarecs.template'
+#read EPICS database template into a python list of epicspv objects.
+db =readDb(fn)
+dbgr = groupDbRBV(db)
+#now dbgr contains tuples of pvs and corresponding RBV pvs. pvs without their 
+# read or write compliment are in tuples by themselves.
+
+          
+
+
+
+Generation CSS screen programmatically
+The the file guiClass.py has two classes defined:
+1) cssScreen which defines a CSS boy screen.
+2) cssWidget which defines a button or widget on the cssScreen.
+All data in the cssWidget is stored as XML. When the widget is accessed programmatically,
+XML generation and parsing takes place under the hood. No python variables store the
+state of the widget, but only XML.
+Below is an example for generatioon a css screen.
+
+
+execfile('guiClass.py')
+c=cssWidget()
+c.setType('boolbutton')
+c.setField('x','100')
+c.setField('y','200')
+c.setField('width','20')
+c.setField('height','20')
+c.setField('pv_name','maddog')
+
+c.listFields()
+
+d=cssWidget()
+d.setType('combo')
+d.setField('x','1000')
+d.setField('y','2000')
+d.setField('width','200')
+d.setField('height','20')
+d.setField('pv_name','birddy')
+
+d.listFields()
+
+s=cssScreen()
+s.addWidget(c)
+s.addWidget(d)
+s.listWidgets()
+
+c.setField('AAA','timmadden')
+print c.getXML()
+
+
+
+
+
+
+
+
    
    
    
