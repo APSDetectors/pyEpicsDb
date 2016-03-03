@@ -21,6 +21,7 @@ allowed automatic updating of the software drivers and user interfaces.
 ##How this software can be used.
 
 pyEpicsDb can be used for the following purposes:
+
 1. Programmatically generating EPICS databases.
 2. parsing EPICS template files into python objects fr programmacic manipulation
 3. Documenting EPICS databases by generating an HTML table of EPICS PVs
