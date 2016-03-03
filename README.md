@@ -2,7 +2,7 @@
 
 Python Functions for manipulating Epics Databases
 
-History
+##History
 
 This software, called pyEpicsDb, was design for the Digital Gammasphere project in the Pysics Division
 Argonne National Laboratory. Digital Gammasphere (DGS) is a new digital data 
@@ -18,7 +18,7 @@ registers, python scripts can reqad this spreadsheet and automatically generate
 EPICS databases, C code and GUIs. In this way, every change in the FPGA firmware
 allowed automatic updating of the software drivers and user interfaces. 
 
-How this software can be used.
+##How this software can be used.
 
 pyEpicsDb can be used for the following purposes:
 1. Programmatically generating EPICS databases.
@@ -26,10 +26,10 @@ pyEpicsDb can be used for the following purposes:
 3. Documenting EPICS databases by generating an HTML table of EPICS PVs
 4. Reformatting EPICS template files for uniform white space usage.
 5. Given a list of PVs in a spread sheet, one can generate:
-	a) EPICS template files.
-	b) Control System Studio GUI screens
-	c) asynDriver C++ code to support the PVs in software
-	d) IOC startup files
+	* EPICS template files.
+	* Control System Studio GUI screens
+	* asynDriver C++ code to support the PVs in software
+	* IOC startup files
 6. given an EPICS template file, one can generate GUIs and C++ asynDriver code.
 7. Parsing EDM GUI files and generating OPI Control System Studio files.
 8. Generating EPICS database template files,C++ code, startup files from Control
@@ -45,25 +45,32 @@ deleted or added. Also PVs can be entirely programmacitalkly created and written
 to an EPICS template file. 
    
    
-Examples:
+##Examples:
+
+###Reformat db files
 
 To reformat a template file for nice white space usage:
+
+```
 execfile('epicsDb2Docs.py')
 
 fn = 'D:/Madden/GitHub/areaDetector-R2-4/ADPCO/pcoApp/Db/pco_metarecs.template'
+
 #read EPICS database template into a python list of epicspv objects.
+
 db =readDb(fn)
-#write the database back to a file.
+#write database
 writeDb(db,fn)
 #now white space is nicer.
+```
 
-
+###HTML docs
 To generate an HTML table of an epics database it is easiest to have PV names
 and asynDriver parameter strings the same. Otherwise one must have some
 set of rules of how params, param strings and PVs are named. pvEpicsDb is written
 such that PVs, params, param strings are all identical.
 To generate a table:
-
+```
 #read EPICS database template into a python list of epicspv objects.
 
 fn = 'D:/Madden/GitHub/areaDetector-R2-4/ADPCO/pcoApp/Db/pco_metarecs.template'
@@ -71,30 +78,33 @@ db =readDb(fn)
 #Generate an html table for documentation
 dbToHtmlDoc(db,filename='table.html')
 
+```
 
-
-Find PV object in a database
+###Find PV object in a database
+```
 pv = findPv(db,'$(P)$(R)mypv')
+```
 
-
+### Grouping PVs
 
 To associate write PVs with corresponding readback PVs, we name the write PV
 $(P)$(R)mypv, and the readback pv as $(P)$(R)mypv_RBV
 we can group these PVs as tuples from a list of pv objects.
 
-
+```
 fn = 'D:/Madden/GitHub/areaDetector-R2-4/ADPCO/pcoApp/Db/pco_metarecs.template'
 #read EPICS database template into a python list of epicspv objects.
 db =readDb(fn)
 dbgr = groupDbRBV(db)
 #now dbgr contains tuples of pvs and corresponding RBV pvs. pvs without their 
 # read or write compliment are in tuples by themselves.
-
+```
           
 
 
 
-Generation CSS screen programmatically
+###Generation CSS screen programmatically
+
 The the file guiClass.py has two classes defined:
 1) cssScreen which defines a CSS boy screen.
 2) cssWidget which defines a button or widget on the cssScreen.
@@ -103,7 +113,7 @@ XML generation and parsing takes place under the hood. No python variables store
 state of the widget, but only XML.
 Below is an example for generatioon a css screen.
 
-
+```
 execfile('guiClass.py')
 c=cssWidget()
 c.setType('boolbutton')
@@ -133,15 +143,5 @@ s.listWidgets()
 c.setField('AAA','timmadden')
 print c.getXML()
 
-
-
-
-
-
-
-
-   
-   
-   
-   
+```
 
